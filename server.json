@@ -1,10 +1,10 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
-  "name": "io.github.alpacahq/alpaca-mcp-server",
-  "title": "Alpaca's MCP Server",
-  "description": "Alpaca Trading API integration for Model Context Protocol (MCP)",
+  "name": "alpaca-mcp-for-dedalus",
+  "title": "Alpaca MCP Server (Dedalus)",
+  "description": "Alpaca Trading API integration via Dedalus MCP (Streamable HTTP)",
   "repository": {
-    "url": "https://github.com/alpacahq/alpaca-mcp-server",
+    "url": "https://github.com/Tobbs2005/Alpaca-MCP-for-Dedalus",
     "source": "github"
   },
   "version": "1.0.12",
@@ -14,7 +14,9 @@
       "identifier": "alpaca-mcp-server",
       "version": "1.0.12",
       "transport": {
-        "type": "stdio"
+        "type": "streamable-http",
+        "port": 8000,
+        "path": "/mcp"
       },
       "environmentVariables": [
         {

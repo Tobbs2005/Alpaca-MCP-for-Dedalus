@@ -1,22 +1,18 @@
 FROM python:3.11-slim
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-
 WORKDIR /app
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project
+# Install dependencies first (for layer caching)
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY pyproject.toml uv.lock README.md ./
+# Copy project files and install the package
+COPY pyproject.toml README.md ./
 COPY src/ ./src/
 COPY .github/core/ ./.github/core/
+RUN pip install --no-cache-dir .
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen
+EXPOSE 8000
 
-ENV PATH="/app/.venv/bin:$PATH"
-
-# Dedalus MCP server (Streamable HTTP on :8000)
-CMD ["alpaca-mcp-dedalus"]
+# Dedalus MCP server (Streamable HTTP on 0.0.0.0:8000/mcp)
+CMD ["python", "-m", "alpaca_mcp_server.dedalus_server"]
