@@ -159,7 +159,7 @@ def build_server() -> MCPServer:
 
 async def serve() -> None:
     server = build_server()
-    await server.serve()
+    await server.serve(host="0.0.0.0")
 
 
 def main() -> None:
